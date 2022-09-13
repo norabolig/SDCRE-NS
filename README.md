@@ -16,6 +16,7 @@ Active satellites disappear from their shell when they reach the end of their li
 Each shell can have independent satellite launch rates into it (assumed to arrive instantaneously).
 
 A fixed drag coefficient is used, but the A/M ratio can independently be assigned to satellites (and derelicts), large debris, and small debris. 
+Drag lifetimes for eachs shell are calculated automatically, dependent on either the solar cycle (with an adjustable starting phase) or a fixed F10.7 cm flux. 
 
 Quickstart 
 ==========
@@ -70,6 +71,47 @@ INITFILE: The init file for setting satellite collisional size, A/M ratio for al
 
 OUTFILE: Any name for the desired outfile for the detailed tracking in the shell specified by idSnap (id Snap Shot).
 
+INFILE
+======
 
+The infile has a single header line followed by shell control lines. 
 
+The header line is as follows (separated by commas)
+
+Sat.Radius, Min.Large.Debris, Min.Small.Debris, A/M.Sat, A/M.Large.Debris, A/M.Small.Debris
+
+The effective satellite radius (Sat.Radius) is given in metres and is used to set the collisional cross section for a single satellite. 
+The minimun size for large debris (Min.Large.Debris) is the diameter in metres, although the value is not currently used (will be in future versions). It is largely for information only at this time.
+The minimum size for small debris (Min.Small.Debris) is the diameter in metres, but like large debris, is currently for information purposes. 
+The A/M.Sat is the A/M ratio for satellites in m^2/kg.  The A/M ratio for large and small debris is similar. 
+
+The file then lists each desired shell for modelling in descending order (highest shell first). The line is 
+
+Altitude, N.Sats, N.Derelicts, N.Large.Debris, N.Small.Debris, Satellite.Launch.Rate
+
+The altitude is given in metres and the numbers of each species are just that. The satellite launch rate is the number of satellites launched into the current shell per year. 
+
+A full INFILE might thus look like this
+
+```
+1.784,.1,0.01,0.04,0.064,0.064
+530e3,0,0,380,3800,0
+520e3,0,0,380,3800,0
+510e3,0,0,380,3800,0
+500e3,2000,0,380,3800,400
+490e3,0,0,0,0,0
+480e3,0,0,0,0,0
+470e3,0,0,0,0,0
+```
+
+Fixed Parameters
+================
+
+The following is fixed in the code. 
+
+The coefficient of drag is C_D=2.2. This will be changed soon so that it is also adjustable. For now, alter the A/M ratio accordingly. 
+
+The radius of the Earth is set to the equatorial radius of 6378.137e3 metres.
+
+The gravitational parameter of the Earth is GM = 3.9860044418e14 m^3/s^2.
 
